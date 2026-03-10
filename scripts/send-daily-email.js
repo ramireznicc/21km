@@ -1,8 +1,8 @@
 import { weeks } from '../src/data.js'
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY
-const TO_EMAIL = 'ramireznicc@proton.me'
-const FROM_EMAIL = 'plan21km@resend.dev'
+const TO_EMAIL = 'ramireznicc.23@gmail.com'
+const FROM_EMAIL = 'onboarding@resend.dev'
 
 function getTodayEntry() {
   // Argentina = UTC-3, always
