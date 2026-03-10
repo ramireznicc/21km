@@ -1,46 +1,76 @@
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
 .card {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 12px;
   margin-bottom: 8px;
   overflow: hidden;
-  transition: border-color 0.2s, opacity 0.2s;
+  transition: border-color 0.2s, opacity 0.2s, box-shadow 0.2s;
   cursor: pointer;
+  animation: fadeUp 0.25s ease both;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
 }
 
 .card:hover {
   border-color: #30363d;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
 }
 
+/* Left accent border per type — always visible */
+.type_run      { border-left: 3px solid var(--run); }
+.type_rest     { border-left: 3px solid var(--rest); }
+.type_stretch  { border-left: 3px solid var(--stretch); }
+.type_strength { border-left: 3px solid var(--strength); }
+.type_free     { border-left: 3px solid var(--free); }
+.type_race     { border-left: 3px solid var(--race); }
+
+/* When open, all borders take type color at low opacity */
+.open.type_run      { border-color: rgba(63,185,80,0.4); }
+.open.type_rest     { border-color: rgba(110,118,129,0.4); }
+.open.type_stretch  { border-color: rgba(88,166,255,0.4); }
+.open.type_strength { border-color: rgba(188,140,255,0.4); }
+.open.type_free     { border-color: rgba(240,136,62,0.4); }
+.open.type_race     { border-color: rgba(255,107,107,0.4); }
+
 .checked {
-  opacity: 0.6;
+  opacity: 0.55;
 }
 
 .today {
-  border-color: rgba(63, 185, 80, 0.5);
-  box-shadow: 0 0 0 1px rgba(63, 185, 80, 0.1);
+  background: rgba(63, 185, 80, 0.03);
+  box-shadow: 0 0 0 1px rgba(63, 185, 80, 0.15), 0 2px 8px rgba(0,0,0,0.3);
 }
-
-/* Open border color per type */
-.open.type_run      { border-color: var(--run); }
-.open.type_rest     { border-color: var(--rest); }
-.open.type_stretch  { border-color: var(--stretch); }
-.open.type_strength { border-color: var(--strength); }
-.open.type_free     { border-color: var(--free); }
-.open.type_race     { border-color: var(--race); }
 
 .header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 12px;
   padding: 14px 16px;
-  align-items: flex-start;
 }
 
-.emoji {
-  font-size: 22px;
+/* Emoji circular background */
+.emojiWrapper {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
   flex-shrink: 0;
+  margin-top: 1px;
 }
+
+.emojiWrapper_run      { background: rgba(63,185,80,0.12); }
+.emojiWrapper_rest     { background: rgba(110,118,129,0.12); }
+.emojiWrapper_stretch  { background: rgba(88,166,255,0.12); }
+.emojiWrapper_strength { background: rgba(188,140,255,0.12); }
+.emojiWrapper_free     { background: rgba(240,136,62,0.12); }
+.emojiWrapper_race     { background: rgba(255,107,107,0.12); }
 
 .info {
   flex: 1;
@@ -63,7 +93,7 @@
   font-size: 12px;
   color: var(--muted);
   font-weight: 500;
-  margin-top: 2px;
+  margin-top: 3px;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -79,24 +109,6 @@
   border-radius: 20px;
 }
 
-.tag {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  padding: 3px 10px;
-  border-radius: 20px;
-  flex-shrink: 0;
-  white-space: nowrap;
-}
-
-.tag_run      { background: rgba(63,185,80,0.15);    color: var(--run); }
-.tag_rest     { background: rgba(110,118,129,0.15); color: var(--rest); }
-.tag_stretch  { background: rgba(88,166,255,0.15);  color: var(--stretch); }
-.tag_strength { background: rgba(188,140,255,0.15); color: var(--strength); }
-.tag_free     { background: rgba(240,136,62,0.15);  color: var(--free); }
-.tag_race     { background: rgba(255,107,107,0.15); color: var(--race); }
-
 /* Check button */
 @keyframes checkPop {
   0%   { transform: scale(1); }
@@ -105,8 +117,8 @@
 }
 
 .checkBtn {
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   border: 2px solid var(--border);
   background: transparent;
@@ -119,6 +131,7 @@
   justify-content: center;
   flex-shrink: 0;
   transition: border-color 0.2s, background 0.2s, color 0.2s;
+  margin-top: 2px;
 }
 
 .checkBtn:hover {
@@ -138,6 +151,7 @@
   flex-shrink: 0;
   transition: transform 0.2s;
   display: inline-block;
+  margin-top: 6px;
 }
 
 .chevronOpen {
@@ -156,7 +170,7 @@
 }
 
 .detailInner {
-  padding: 12px 16px 14px 54px;
+  padding: 12px 16px 16px 68px;
   font-size: 13.5px;
   color: #8b949e;
   line-height: 1.7;

@@ -6,18 +6,38 @@
 .hero {
   text-align: center;
   padding: 40px 20px 32px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 500px;
+  height: 320px;
+  background: radial-gradient(ellipse, rgba(63,185,80,0.1) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero > * {
+  position: relative;
+  z-index: 1;
 }
 
 .badge {
   display: inline-block;
-  background: rgba(63,185,80,0.15);
-  border: 1px solid rgba(63,185,80,0.4);
+  background: rgba(63,185,80,0.12);
+  border: 1px solid rgba(63,185,80,0.35);
   color: var(--run);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 2px;
   text-transform: uppercase;
-  padding: 6px 16px;
+  padding: 5px 14px;
   border-radius: 20px;
   margin-bottom: 20px;
 }
@@ -42,12 +62,17 @@
 }
 
 .countdown {
-  margin-top: 10px;
-  font-size: 13px;
+  display: inline-block;
+  margin-top: 14px;
+  font-size: 12px;
   font-weight: 700;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
   color: var(--run);
+  background: rgba(63,185,80,0.1);
+  border: 1px solid rgba(63,185,80,0.25);
+  padding: 6px 16px;
+  border-radius: 20px;
 }
 
 /* Progress */
@@ -56,12 +81,12 @@
   align-items: center;
   gap: 12px;
   max-width: 400px;
-  margin: 24px auto 0;
+  margin: 20px auto 0;
 }
 
 .progressBar {
   flex: 1;
-  height: 6px;
+  height: 5px;
   background: var(--border);
   border-radius: 99px;
   overflow: hidden;
@@ -69,9 +94,9 @@
 
 .progressFill {
   height: 100%;
-  background: var(--run);
+  background: linear-gradient(90deg, #2ea043, #3fb950);
   border-radius: 99px;
-  transition: width 0.3s ease;
+  transition: width 0.4s ease;
 }
 
 .progressLabel {
@@ -110,51 +135,13 @@
 .tabActive {
   background: #21262d;
   color: var(--text);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.3);
 }
 
 /* Content */
 .content {
   max-width: 640px;
   margin: 0 auto;
-}
-
-/* Legend */
-.legend {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 20px;
-}
-
-.legendItem {
-  font-size: 12px;
-  font-weight: 600;
-  padding: 4px 12px;
-  border-radius: 20px;
-}
-
-.legendRun     { background: rgba(63,185,80,0.15);   color: var(--run); }
-.legendRest    { background: rgba(110,118,129,0.15); color: var(--rest); }
-.legendStretch { background: rgba(88,166,255,0.15);  color: var(--stretch); }
-.legendFree    { background: rgba(240,136,62,0.15);  color: var(--free); }
-.legendRace    { background: rgba(255,107,107,0.15); color: var(--race); }
-
-/* Warning */
-.warning {
-  background: rgba(255,107,107,0.08);
-  border: 1px solid rgba(255,107,107,0.3);
-  border-radius: 12px;
-  padding: 16px;
-  margin-top: 8px;
-  font-size: 13.5px;
-  color: #ff9999;
-  line-height: 1.7;
-}
-
-.warning strong {
-  color: #ff6b6b;
-  display: block;
-  margin-bottom: 6px;
 }
 
 /* Footer */

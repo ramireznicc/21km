@@ -1,15 +1,6 @@
 import { useState } from 'react'
 import styles from './DayCard.module.css'
 
-const TYPE_LABELS = {
-  run: 'Carrera',
-  rest: 'Descanso',
-  stretch: 'Estiramiento',
-  strength: 'Fuerza',
-  free: 'Libre',
-  race: 'Carrera',
-}
-
 export default function DayCard({ day, checked, onCheck, isToday }) {
   const [open, setOpen] = useState(false)
 
@@ -36,7 +27,9 @@ export default function DayCard({ day, checked, onCheck, isToday }) {
       onClick={handleCardClick}
     >
       <div className={styles.header}>
-        <span className={styles.emoji}>{day.emoji}</span>
+        <div className={`${styles.emojiWrapper} ${styles[`emojiWrapper_${day.type}`]}`}>
+          {day.emoji}
+        </div>
         <div className={styles.info}>
           <div className={`${styles.title} ${checked ? styles.strikethrough : ''}`}>
             {day.title}
@@ -46,9 +39,6 @@ export default function DayCard({ day, checked, onCheck, isToday }) {
             {isToday && <span className={styles.todayBadge}>HOY</span>}
           </div>
         </div>
-        <span className={`${styles.tag} ${styles[`tag_${day.type}`]}`}>
-          {TYPE_LABELS[day.type]}
-        </span>
         <button
           className={`${styles.checkBtn} ${checked ? styles.checkBtnDone : ''}`}
           onClick={handleCheckClick}
