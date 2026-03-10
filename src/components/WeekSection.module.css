@@ -1,0 +1,34 @@
+.week {
+  margin-bottom: 32px;
+}
+
+.header {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  letter-spacing: 1px;
+  color: var(--muted);
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0 4px;
+}
+
+.title {
+  color: var(--muted);
+}
+
+.subtitle {
+  color: var(--text);
+}
+
+.note {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--run);
+  letter-spacing: 0;
+  margin-left: 8px;
+}

@@ -1,0 +1,167 @@
+.app {
+  padding: 0 16px 0;
+}
+
+/* Hero */
+.hero {
+  text-align: center;
+  padding: 40px 20px 32px;
+}
+
+.badge {
+  display: inline-block;
+  background: rgba(63,185,80,0.15);
+  border: 1px solid rgba(63,185,80,0.4);
+  color: var(--run);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 6px 16px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+}
+
+.title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(52px, 12vw, 96px);
+  letter-spacing: 2px;
+  line-height: 0.9;
+  background: linear-gradient(135deg, #e6edf3 40%, #3fb950);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 12px;
+}
+
+.sub {
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.countdown {
+  margin-top: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--run);
+}
+
+/* Progress */
+.progress {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 400px;
+  margin: 24px auto 0;
+}
+
+.progressBar {
+  flex: 1;
+  height: 6px;
+  background: var(--border);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: var(--run);
+  border-radius: 99px;
+  transition: width 0.3s ease;
+}
+
+.progressLabel {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: 4px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 4px;
+  max-width: 500px;
+  margin: 0 auto 32px;
+}
+
+.tab {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 9px;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.2s;
+  background: transparent;
+  color: var(--muted);
+}
+
+.tabActive {
+  background: #21262d;
+  color: var(--text);
+}
+
+/* Content */
+.content {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+/* Legend */
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.legendItem {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+.legendRun     { background: rgba(63,185,80,0.15);   color: var(--run); }
+.legendRest    { background: rgba(110,118,129,0.15); color: var(--rest); }
+.legendStretch { background: rgba(88,166,255,0.15);  color: var(--stretch); }
+.legendFree    { background: rgba(240,136,62,0.15);  color: var(--free); }
+.legendRace    { background: rgba(255,107,107,0.15); color: var(--race); }
+
+/* Warning */
+.warning {
+  background: rgba(255,107,107,0.08);
+  border: 1px solid rgba(255,107,107,0.3);
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 8px;
+  font-size: 13.5px;
+  color: #ff9999;
+  line-height: 1.7;
+}
+
+.warning strong {
+  color: #ff6b6b;
+  display: block;
+  margin-bottom: 6px;
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 40px;
+  padding-bottom: 40px;
+}

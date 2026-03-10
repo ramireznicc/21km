@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plan 21 km — Nico</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --border: #21262d;
+    --text: #e6edf3;
+    --muted: #7d8590;
+    --run: #3fb950;
+    --rest: #6e7681;
+    --stretch: #58a6ff;
+    --free: #f0883e;
+    --race: #ff6b6b;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    padding: 24px 16px 60px;
+  }
+
+  .hero {
+    text-align: center;
+    padding: 40px 20px 32px;
+    position: relative;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    background: rgba(63,185,80,0.15);
+    border: 1px solid rgba(63,185,80,0.4);
+    color: var(--run);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+  }
+
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(52px, 12vw, 96px);
+    letter-spacing: 2px;
+    line-height: 0.9;
+    background: linear-gradient(135deg, #e6edf3 40%, #3fb950);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 12px;
+  }
+
+  .hero-sub {
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+  }
+
+  /* Tabs */
+  .tabs {
+    display: flex;
+    gap: 4px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 4px;
+    max-width: 500px;
+    margin: 0 auto 32px;
+  }
+
+  .tab {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 9px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.2s;
+    background: transparent;
+    color: var(--muted);
+  }
+
+  .tab.active {
+    background: #21262d;
+    color: var(--text);
+  }
+
+  /* Content panels */
+  .panel { display: none; max-width: 640px; margin: 0 auto; }
+  .panel.active { display: block; }
+
+  /* Week */
+  .week { margin-bottom: 32px; }
+
+  .week-header {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 1px;
+    color: var(--muted);
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .week-header span { color: var(--text); }
+
+  /* Day cards */
+  .day-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 8px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+    cursor: pointer;
+  }
+
+  .day-card:hover { border-color: #30363d; }
+  .day-card.open { border-color: var(--accent-color); }
+
+  .day-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+  }
+
+  .day-emoji { font-size: 22px; flex-shrink: 0; }
+
+  .day-info { flex: 1; }
+
+  .day-title {
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--text);
+  }
+
+  .day-date {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 500;
+    margin-top: 2px;
+  }
+
+  .day-tag {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+
+  .day-chevron {
+    color: var(--muted);
+    font-size: 12px;
+    transition: transform 0.2s;
+  }
+
+  .day-card.open .day-chevron { transform: rotate(180deg); }
+
+  .day-detail {
+    display: none;
+    padding: 0 16px 14px 54px;
+    font-size: 13.5px;
+    color: #8b949e;
+    line-height: 1.7;
+    border-top: 1px solid var(--border);
+    padding-top: 12px;
+    margin-top: 0;
+  }
+
+  .day-card.open .day-detail { display: block; }
+
+  /* Tags colors */
+  .tag-run    { background: rgba(63,185,80,0.15);  color: #3fb950; }
+  .tag-rest   { background: rgba(110,118,129,0.15); color: #6e7681; }
+  .tag-stretch{ background: rgba(88,166,255,0.15); color: #58a6ff; }
+  .tag-free   { background: rgba(240,136,62,0.15); color: #f0883e; }
+  .tag-race   { background: rgba(255,107,107,0.15);color: #ff6b6b; }
+
+  /* Warning box */
+  .warning {
+    background: rgba(255,107,107,0.08);
+    border: 1px solid rgba(255,107,107,0.3);
+    border-radius: 12px;
+    padding: 16px;
+    margin-top: 8px;
+    font-size: 13.5px;
+    color: #ff9999;
+    line-height: 1.7;
+  }
+
+  .warning strong { color: #ff6b6b; display: block; margin-bottom: 6px; }
+
+  /* Tips */
+  .tip-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 12px;
+  }
+
+  .tip-title {
+    font-weight: 700;
+    font-size: 15px;
+    margin-bottom: 14px;
+    color: var(--text);
+  }
+
+  .tip-card ul {
+    padding-left: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .tip-card li {
+    font-size: 13.5px;
+    color: #8b949e;
+    line-height: 1.65;
+  }
+
+  /* Legend */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .legend-item {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 20px;
+  }
+
+  footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 40px;
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-badge">20 días · La promesa</div>
+  <h1>21 KM</h1>
+  <p class="hero-sub">Plan de entrenamiento · 10 al 29 de marzo · Viernes y sábados libres</p>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="switchTab('plan', this)">📅 Plan semanal</button>
+  <button class="tab" onclick="switchTab('tips', this)">💡 Consejos</button>
+</div>
+
+<!-- PLAN PANEL -->
+<div class="panel active" id="panel-plan">
+
+  <div class="legend">
+    <span class="legend-item tag-run">🏃 Carrera</span>
+    <span class="legend-item tag-stretch">🧘 Estiramiento</span>
+    <span class="legend-item tag-rest">😴 Descanso</span>
+    <span class="legend-item tag-free">🎉 Libre</span>
+    <span class="legend-item tag-race">🏁 La carrera</span>
+  </div>
+
+  <div class="week">
+    <div class="week-header">Semana 1 — <span>Reactivación</span> <small style="font-family:'DM Sans',sans-serif;font-size:13px;color:#3fb950">✔ Lunes 9: 6 km hechos</small></div>
+
+    <div class="day-card" style="--accent-color: #6e7681" onclick="toggle(this)">
+      <div class="day-header">
+        <div class="day-emoji">😴</div>
+        <div class="day-info">
+          <div class="day-title">Descanso activo</div>
+          <div class="day-date">Martes 10</div>
+        </div>
+        <span class="day-tag tag-rest">Descanso</span>
+        <span class="day-chevron">▼</span>
+      </div>
+      <div class="day-detail">Ya corriste hoy, las piernas necesitan recuperarse. Caminata suave 20 min si querés moverte, o descanso total. Nada de correr.</div>
+    </div>
+
+    <div class="day-card" style="--accent-color: #58a6ff" onclick="toggle(this)">
+      <div class="day-header">
+        <div class="day-emoji">🧘</div>
+        <div class="day-info">
+          <div class="day-title">Estiramiento + fuerza core</div>
+          <div class="day-date">Miércoles 11</div>
+        </div>
+        <span class="day-tag tag-stretch">Estiramiento</span>
+        <span class="day-chevron">▼</span>
+      </div>
+      <div class="day-detail">20–25 min: plancha (3×30 seg), sentadillas (3×15), estiramiento de isquiotibiales, cadera y gemelos. Ver sección Consejos para la rutina completa.</div>
+    </div>
+
+    <div class="day-card" style="--accent-color: #3fb950" onclick="toggle(this)">
+      <div class="day-header">
+        <div class="day-emoji">🏃</div>
+        <div class="day-info">
+          <div class="day-title">Trote — 8 km</div>
+          <div class="day-date">Jueves 12</div>
+        </div>
+        <span class="day-tag tag-run">Carrera</span>
+        <span class="day-chevron">▼</span>
+      </div>
+      <div class="day-detail">Ritmo moderado 5:50–6:10/km. Podés intercalar: 5 min a ritmo medio + 2 min suave. Terminá sintiéndote que podías seguir.</div>
+    </div>
+
+    <div class="day-card" style="--accent-color: #f0883e" onclick="toggle(this)">
+      <div class="day-header">
+        <div class="day-emoji">🎉</div>
+        <div class="day-info">
+          <div class="day-title">¡Libre! — Salida con amigos</div>
+          <div class="day-date">Viernes 13</div>
+        </div>
+        <span class="day-tag tag-free">Libre</span>
+        <span class="day-chevron">▼</span>
+      </div>
+      <div class="day-detail">Disfrutá. Solo intentá no trasnochar demasiado — tenés una rodada el domingo.</div>
+    </div>
+
+    <div class="day-card" style="--accent-color: #f0883e" onclick="toggle(this)">
+      <div class="day-header">
+        <div class="day-emoji">🎉</div>
+        <div class="day-info">
+          <div class="day-title">¡Libre! — Sábado</div>
+          <div class="day-date">Sábado 14</div>
+        </div>
+        <span class="day-tag tag-free">Libre</span>
+        <span class="day-chevron">▼</span>
+      </div>
+      <div class="day-detail">Descansá. Hidratate bien. Mañana es la rodada larga de la semana.</div>
+    </div>
+
+    <div class="day-card" style="--accent-color: #3fb950" onclick="toggle(this)">
+      <div class="day-header">
+        <div class="day-emoji">🏃</div>
+        <div class="day-info">
+          <div class="day-title">Rodada larga — 13–14 km ⭐</div>
+          <div class="day-date">Domingo 15</div>
+        </div>
+        <span class="day-tag tag-run">Carrera</span>
+        <span class="day-chevron">▼</span>
+      </div>
+      <div class="day-detail">Ritmo suave 6:10–6:30/km. Sin apuro. Si llegás a 12 km y estás bien, seguí. Llevá agua o planificá por dónde recargar. Este entrenamiento es la base de todo.</div>
+    </div>
+  </div>
+
+  <div class="week">
+    <div class="week-header">Semana 2 — <span>Consolidación</span></div>
+
+    <div class="day-card" style="--accent-color: #6e7281" onclick="toggle(this)">
+      <div class="day-header">
+        <div class="day-emoji">😴</div>
+        <div class="day-info">
+          <div class="day-title">Descanso o caminata</div>
+          <div class="day-date">Lunes 16</div>
+        </div>
+        <span class="day-tag tag-rest">Descanso</span>
+        <span class="day-chevron">▼</span>
+      </div>
+      <div class="day-detail">Recuperación activa post-rodada larga. Las piernas necesitan asimilar el trabajo del domingo.</div>
+    </div>
+
+    <div class="day-card" style="--accent-color: #3fb950" onclick="toggle(this)">
+      <div class="day-header">
+        <div class="day-emoji">🏃</div>
+        <div class="day-info">
+          <div class="day-title">Trote suave — 6 km</div>
+          <div class="day-date">Martes 17</div>
+        </div>
+        <span class="day-tag tag-run">Carrera</span>
+        <span class="day-chevron">▼</span>
+      </div>
+      <div class="day-detail">Piernas livianas, ritmo 6:10–6:20/km. Solo activación, sin exigirse.</div>
+    </div>
+
+    <div class="day-card" style="--accent-color: #58a6ff" onclick="toggle(this)">
+      <div class="day-header">
+        <div class="day-emoji">🧘</div>
+        <div class="day-info">
+          <div class="day-title">Estiramiento + fuerza</div>
+          <div class="day-date">Miércoles 18</div>
+        </div>
+        <span class="day-tag tag-stretch">Estiramiento</span>
+        <span class="day-chevron">▼</span>
+      </div>
+      <div class="day-detail">Gemelos, isquiotibiales, cadera flexora, glúteos. Foam roller si tenés. Dedicá por lo menos 25 min.</div>
+    </div>
+
+    <div class="day-card" style="--accent-color: #3fb950" onclick="toggle(this)">
+      <div class="day-header">
+        <div class="day-emoji">🏃</div>
+        <div class="day-info">
+          <div class="day-title">Trote — 8–9 km</div>
+          <div class="day-date">Jueves 19</div>
+        </div>
+        <span class="day-tag tag-run">Carrera</span>
+        <span class="day-chevron">▼</span>
+      </div>
+      <div class="day-detail">Ritmo cómodo. En algún tramo podés subir a 5:30/km por 10–15 min para acostumbrarte al ritmo objetivo de la carrera.</div>
+    </div>
+
+    <div class="day-card" style="--accent-color: #f0883e" onclick="toggle(this)">
+      <div class="day-header">
+        <div class="day-emoji">🎉</div>
+        <div class="day-info">
+          <div class="day-title">¡Libre! — Salida con amigos</div>
+          <div class="day-date">Viernes 20</div>
+        </div>
+        <span class="day-tag tag-free">Libre</span>
+        <span class="day-chevron">▼</span>
+      </div>
+      <div class="day-detail">Aprovechá. El sábado también es libre. Igual, recordá que el domingo viene la rodada más importante del plan.</div>
+    </div>
+
+    <div class="day-card" style="--accent-color: #f0883e" onclick="toggle(this)">
+      <div class="day-header">
+        <div class="day-emoji">🎉</div>
+        <div class="day-info">
+          <div class="day-title">¡Libre! — Sábado</div>
+          <div class="day-date">Sábado 21</div>
+        </div>
+        <span class="day-tag tag-free">Libre</span>
+        <span class="day-chevron">▼</span>
+      </div>
+      <div class="day-detail">Descansá. Hidratate bien — la rodada larga del domingo 22 es el entrenamiento más importante del plan.</div>
+    </div>
+
+    <div class="day-card" style="--accent-color: #3fb950" onclick="toggle(this)">
+      <div class="day-header">
+        <div class="day-emoji">🏃</div>
+        <div class="day-info">
+          <div class="day-title">Rodada larga — 16–17 km 🔑</div>
+          <div class="day-date">Domingo 22</div>
+        </div>
+        <span class="day-tag tag-run">Carrera</span>
+        <span class="day-chevron">▼</span>
+      </div>
+      <div class="day-detail">⭐ ENTRENAMIENTO CLAVE. Ritmo suave 6:10–6:30/km. Obligatorio llevar agua. Si llegás a 16 km, ya sabés que los 21 están al alcance. No importa el tiempo, importa llegar.</div>
+    </div>
+  </div>
+
+  <div class="week">
+    <div class="week-header">Semana 3 — <span>Tapering + Carrera</span></div>
+
+    <div class="day-card" style="--accent-color: #6e7681" onclick="toggle(this)">
+      <div class="day-header">
+        <div class="day-emoji">😴</div>
+        <div class="day-info">
+          <div class="day-title">Descanso total</div>
+          <div class="day-date">Lunes 23</div>
+        </div>
+        <span class="day-tag tag-rest">Descanso</span>
+        <span class="day-chevron">▼</span>
+      </div>
+      <div class="day-detail">Recuperación post-rodada larga. Importante de verdad: el descanso es parte del entrenamiento.</div>
+    </div>
+
+    <div class="day-card" style="--accent-color: #3fb950" onclick="toggle(this)">
+      <div class="day-header">
+        <div class="day-emoji">🏃</div>
+        <div class="day-info">
+          <div class="day-title">Trote muy suave — 5 km</div>
+          <div class="day-date">Martes 24</div>
+        </div>
+        <span class="day-tag tag-run">Carrera</span>
+        <span class="day-chevron">▼</span>
+      </div>
+      <div class="day-detail">Muy suave, 6:20–6:30/km. Solo para mantener el ritmo activo. Sin cansarte.</div>
+    </div>
+
+    <div class="day-card" style="--accent-color: #58a6ff" onclick="toggle(this)">
+      <div class="day-header">
+        <div class="day-emoji">🧘</div>
+        <div class="day-info">
+          <div class="day-title">Estiramiento completo</div>
+          <div class="day-date">Miércoles 25</div>
+        </div>
+        <span class="day-tag tag-stretch">Estiramiento</span>
+        <span class="day-chevron">▼</span>
+      </div>
+      <div class="day-detail">Sesión larga: 30 min. Todo el tren inferior + espalda baja. Preparás el cuerpo para la carrera.</div>
+    </div>
+
+    <div class="day-card" style="--accent-color: #3fb950" onclick="toggle(this)">
+      <div class="day-header">
+        <div class="day-emoji">🏃</div>
+        <div class="day-info">
+          <div class="day-title">Trote corto — 4–5 km</div>
+          <div class="day-date">Jueves 26</div>
+        </div>
+        <span class="day-tag tag-run">Carrera</span>
+        <span class="day-chevron">▼</span>
+      </div>
+      <div class="day-detail">Muy suave. Las piernas deben estar frescas para el domingo. No es el momento de esforzarse.</div>
+    </div>
+
+    <div class="day-card" style="--accent-color: #f0883e" onclick="toggle(this)">
+      <div class="day-header">
+        <div class="day-emoji">🎉</div>
+        <div class="day-info">
+          <div class="day-title">¡Libre! — Último viernes</div>
+          <div class="day-date">Viernes 27</div>
+        </div>
+        <span class="day-tag tag-free">Libre</span>
+        <span class="day-chevron">▼</span>
+      </div>
+      <div class="day-detail">Podés salir tranquilo. Intentá no irte muy tarde — el domingo es el día grande.</div>
+    </div>
+
+    <div class="day-card" style="--accent-color: #6e7681" onclick="toggle(this)">
+      <div class="day-header">
+        <div class="day-emoji">😴</div>
+        <div class="day-info">
+          <div class="day-title">Descanso total + preparación</div>
+          <div class="day-date">Sábado 28</div>
+        </div>
+        <span class="day-tag tag-rest">Descanso</span>
+        <span class="day-chevron">▼</span>
+      </div>
+      <div class="day-detail">Preparás la ropa y el calzado. Comé bien durante el día (carbos, nada pesado a la noche). Dormí temprano. Hidratate.</div>
+    </div>
+
+    <div class="day-card" style="--accent-color: #ff6b6b" onclick="toggle(this)">
+      <div class="day-header">
+        <div class="day-emoji">🏁</div>
+        <div class="day-info">
+          <div class="day-title">21 KM — ¡La promesa! 🎯</div>
+          <div class="day-date">Domingo 29</div>
+        </div>
+        <span class="day-tag tag-race">Carrera</span>
+        <span class="day-chevron">▼</span>
+      </div>
+      <div class="day-detail">Ritmo objetivo: 5:50–6:10/km → llegás en ~2:05–2:10 hs. Arrancá conservador los primeros 5 km. Hidratate cada 3–4 km. Caminá si lo necesitás — no es rendirse, es estrategia. Un kilómetro a la vez. ¡Podés hacerlo!</div>
+    </div>
+  </div>
+
+  <div class="warning">
+    <strong>⚠️ Señales para parar o bajar el ritmo</strong>
+    Dolor de rodilla, cadera o tibias que no desaparece al calentar → pará y descansá. Mareo o náuseas → caminá y tomá agua. Siempre es mejor llegar al día D descansado que lesionado.
+  </div>
+</div>
+
+<!-- TIPS PANEL -->
+<div class="panel" id="panel-tips">
+
+  <div class="tip-card">
+    <div class="tip-title">🥗 Alimentación sin gastar de más</div>
+    <ul>
+      <li>Arroz, fideos, papa y batata son tus mejores amigos. Carbos baratos. Aumentalos el día antes de cada rodada larga.</li>
+      <li>Huevo: proteína barata y completa. Intentá comer 2–3 por día en los días de entrenamiento.</li>
+      <li>Banana o naranja antes de correr. Barata y te da energía rápida disponible.</li>
+      <li>Legumbres (lentejas, garbanzos): proteína + hierro. Ideales post-rodada larga.</li>
+      <li>No necesitás gel ni suplemento para 21 km. Con comer bien antes alcanza perfectamente.</li>
+      <li>La noche anterior a la carrera: plato de pastas o arroz. Nada nuevo, nada pesado.</li>
+      <li>Mañana del 30: comé 2 horas antes de salir. Banana + tostadas o arroz con algo. Café si lo tomás normalmente.</li>
+    </ul>
+  </div>
+
+  <div class="tip-card">
+    <div class="tip-title">💧 Hidratación</div>
+    <ul>
+      <li>Tomá agua a lo largo del día, no solo cuando tenés sed.</li>
+      <li>Antes de correr: 1 vaso de agua 30 min antes. No sobrehidrates.</li>
+      <li>En rodadas largas (+12 km): llevá una botellita o planificá fuentes / kioscos en el recorrido.</li>
+      <li>Si el viernes o sábado tomás alcohol: el domingo hidratate el doble antes de salir a correr.</li>
+      <li>El día de la carrera llevá agua sí o sí, aunque sea una botellita de 500 ml.</li>
+    </ul>
+  </div>
+
+  <div class="tip-card">
+    <div class="tip-title">🧘 Rutina de estiramiento (20–25 min)</div>
+    <ul>
+      <li><strong>Gemelos:</strong> contra la pared, pierna extendida atrás, 30 seg por pierna × 2.</li>
+      <li><strong>Isquiotibiales:</strong> sentado en el piso, piernas extendidas, inclinación al frente, 30 seg × 2.</li>
+      <li><strong>Cuádriceps:</strong> parado, tobillo al glúteo, 30 seg por lado × 2.</li>
+      <li><strong>Cadera flexora (psoas):</strong> estocada baja, rodilla en el piso, 40 seg por lado.</li>
+      <li><strong>Glúteos:</strong> acostado, rodilla al pecho, luego cruzada al lado contrario, 30 seg por lado.</li>
+      <li><strong>Espalda baja:</strong> "pose del niño" en el piso, 1 min. O rodillas al pecho acostado.</li>
+      <li>Hacé esto después de correr, no antes (pre-carrera: calentá trotando 5 min suave).</li>
+    </ul>
+  </div>
+
+  <div class="tip-card">
+    <div class="tip-title">👟 Equipamiento y logística</div>
+    <ul>
+      <li>Usá las zapatillas con las que ya venís corriendo. No estrenes nada nuevo antes de la carrera.</li>
+      <li>Medias sin costuras o con costura mínima. Las ampollas arruinan una carrera.</li>
+      <li>Ropa: lo que uses normalmente. Si hace calor, evitá remeras de algodón (retienen el sudor y rozan).</li>
+      <li>Vaselina o talco en los puntos de roce si sabés que tenés problemas (axilas, entrepierna, pezones).</li>
+      <li>El día D: preparate todo la noche anterior. Ropa, zapatillas, agua, todo listo.</li>
+    </ul>
+  </div>
+
+  <div class="tip-card">
+    <div class="tip-title">🧠 Estrategia mental para el día de la carrera</div>
+    <ul>
+      <li><strong>Km 1–5:</strong> más lento de lo que querés ir. Guardá energía para la segunda mitad.</li>
+      <li><strong>Km 5–15:</strong> tu ritmo objetivo (~6:00–6:10/km). Tenés que poder hablar si quisieras.</li>
+      <li><strong>Km 15–21:</strong> lo que te quede en el tanque. Apretá si te sentís bien.</li>
+      <li>Caminá 60 segundos si lo necesitás. No es rendirse, es estrategia para terminar.</li>
+      <li>Mentalidad: "un kilómetro a la vez". No pienses en los 21, pensá en el próximo.</li>
+      <li>Cuando el cuerpo diga que pares alrededor del km 14–16, es mentira. Ahí empieza la parte interesante.</li>
+    </ul>
+  </div>
+
+</div>
+
+<footer>Plan armado para Nico · Rosario, marzo 2026 · 💪 Podés hacerlo</footer>
+
+<script>
+  function toggle(card) {
+    card.classList.toggle('open');
+  }
+
+  function switchTab(tab, btn) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('panel-' + tab).classList.add('active');
+    btn.classList.add('active');
+  }
+</script>
+</body>
+</html>

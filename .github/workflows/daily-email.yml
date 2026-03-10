@@ -1,0 +1,22 @@
+name: Daily training email
+
+on:
+  schedule:
+    # 9:00am Argentina (ART = UTC-3) → 12:00 UTC
+    - cron: '0 12 * * *'
+  workflow_dispatch: # permite dispararlo manualmente desde GitHub
+
+jobs:
+  send-email:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Send daily training email
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+        run: node scripts/send-daily-email.js
